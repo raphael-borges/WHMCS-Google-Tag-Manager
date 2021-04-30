@@ -181,6 +181,9 @@ add_hook('ClientAreaFooterOutput', 1, function($vars) {
             'products' => $productsArray
           )
         );
+        $removeFromCartArray = array(
+          
+        );
       }
       else if ($_REQUEST['a'] == 'checkout'){
         $eventArray = array(
@@ -206,6 +209,25 @@ add_hook('ClientAreaFooterOutput', 1, function($vars) {
         'add'          => array('products' => $productsArray)
       )
     )) . ");";
+  }
+  
+  $removeFromCartOutput = '';
+  if (!empty($removeFromCartArray)){
+    $productsJSON = json_encode($productsArray);
+    $removeFromCartOutput = "
+      jQuery('#btnEmptyCart').click(function(){
+        
+        dataLayer.push({
+          'event': 'removeFromCart',
+          'ecommerce': {
+            'remove': {
+              'products': $productsJSON
+            }
+          }
+        });
+        
+      });
+    ";
   }
 
   if (!empty($eventArray)){
